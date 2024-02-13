@@ -29,4 +29,5 @@
 ***Requires the following pre-requisites:***
  - CMake
  - glfw
+ - glm
 
