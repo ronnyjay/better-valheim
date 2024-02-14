@@ -7,7 +7,7 @@ build:
 	mkdir -p build
 
 format:
-	clang-format -i src/**/*
+	clang-format -i src/**/*.cpp
 
 run: better-valheim
 	build/better-valheim 

@@ -6,7 +6,10 @@ set(PROJECT_NAME "better-valheim")
 project(${PROJECT_NAME})
 
 # Include source files 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES
+  "src/*.cpp"
+  "src/engine/*.cpp"
+)
 
 # Find required libraries 
 find_package(glfw3 3.3 REQUIRED)
