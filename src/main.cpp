@@ -202,11 +202,11 @@ int main(int argc, char const *argv[])
         engine::shader_program shader_program;
         engine::vao triangle_vao;
         engine::vbo triangle_vbo;
-        engine::texture triangle_texture("resources/textures/beans.png");
+        // engine::texture triangle_texture("resources/textures/beans.png");
 
         {
-            engine::shader vertex_shader("resources/shaders/triangle.vs", GL_VERTEX_SHADER);
-            engine::shader fragment_shader("resources/shaders/triangle.fs", GL_FRAGMENT_SHADER);
+            engine::shader vertex_shader("resources/shaders/debug.vs", GL_VERTEX_SHADER);
+            engine::shader fragment_shader("resources/shaders/debug.fs", GL_FRAGMENT_SHADER);
 
             shader_program.add_shader(vertex_shader.get_id());
             shader_program.add_shader(fragment_shader.get_id());
@@ -214,18 +214,15 @@ int main(int argc, char const *argv[])
         }
 
         // clang-format off
-        static const GLfloat g_vertex_buffer_data[] = {
-            -1.0f, -1.0f, 10.0f, 0.0f, 0.0f,
-            1.0f, -1.0f, 10.0f, 1.0f, 0.0f,
-            1.0f, 1.0f, 10.0f, 1.0f, 1.0f,
-            -1.0f, -1.0f, 10.0f, 0.0f, 0.0f,
-            1.0f, 1.0f, 10.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, 10.0f, 0.0f, 1.0f,
+        static const GLfloat g_vertex_buffer_data[][6] = {
+            { -1.0f, -1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
+            { +1.0f, -1.0f, 10.0f, 0.7f, 0.2f, 1.0f, },
+            { +1.0f, +1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
+            { -1.0f, -1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
+            { +1.0f, +1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
+            { -1.0f, +1.0f, 10.0f, 0.7f, 0.2f, 1.0f, },
         };
         // clang-format on
-
-        glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 1000.0f);
-        glm::mat4 Model = glm::mat4(1.0f);
 
         triangle_vbo.bind();
         triangle_vbo.init(g_vertex_buffer_data, sizeof(g_vertex_buffer_data), GL_STATIC_DRAW);
@@ -254,13 +251,15 @@ int main(int argc, char const *argv[])
             glm::vec3 player_dir(0, 0, 1);
             glm::vec3 player_up(0, 1, 0);
 
+            glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 1000.0f);
+            glm::mat4 Model = glm::mat4(1.0f);
+
             glm::mat4 view = glm::lookAt(player_pos, player_pos + player_dir, player_up);
             glm::mat4 mvp = Projection * view * Model;
 
             glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &mvp[0][0]);
 
             glActiveTexture(GL_TEXTURE0);
-            triangle_texture.bind();
             glUniform1i(texture_id, 0);
 
             glEnableVertexAttribArray(0);
@@ -268,9 +267,8 @@ int main(int argc, char const *argv[])
 
             triangle_vbo.bind();
             triangle_vao.bind();
-            triangle_vao.set(0, 3, GL_FLOAT, 5 * sizeof(float), (void *)(0 * sizeof(float)));
-
-            triangle_vao.set(1, 2, GL_FLOAT, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+            triangle_vao.set(0, 3, GL_FLOAT, 6 * sizeof(float), (void *)(0 * sizeof(float)));
+            triangle_vao.set(1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
             triangle_vao.draw(0, 6);
 
             glDisableVertexAttribArray(0);
