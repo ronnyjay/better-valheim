@@ -169,6 +169,7 @@ int main(int argc, char const *argv[])
     }
 
     glfwSetKeyCallback(window, key_callback);
+    glfwSetWindowSizeCallback(window, window_size_callback);
 
     glfwMakeContextCurrent(window);
 
