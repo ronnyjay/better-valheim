@@ -2,6 +2,7 @@
 #define TEXTURE_HPP_
 
 #include <glad/gl.h>
+
 #include <stb_image/stb_image.h>
 
 #include <stdexcept>
@@ -13,7 +14,7 @@ namespace engine
 class texture
 {
   public:
-    texture(const std::basic_string<char> &imagePath)
+    texture(const std::basic_string<char> imagePath)
     {
         unsigned char *data = stbi_load(imagePath.c_str(), &m_width, &m_height, &m_channels, 0);
 

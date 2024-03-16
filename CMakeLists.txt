@@ -18,14 +18,21 @@ file(GLOB SOURCES
 find_package(glfw3 3.3 REQUIRED)
 find_package(glm)
 
-add_library(glad include/glad/gl.h src/gl.c)
+add_library(glad src/gl.c)
 target_include_directories(glad PUBLIC include/)
+
+add_library(stb src/stb_image.c)
+target_include_directories(stb PUBLIC include/)
 
 # Add executable and set compile options
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_compile_options(${PROJECT_NAME} PRIVATE -Werror -Wall -Wpedantic -g)
+target_include_directories(${PROJECT_NAME} PUBLIC include)
+target_compile_options(${PROJECT_NAME} PRIVATE -Werror -Wall -Wpedantic)
 
 # Link libraries
-target_link_libraries(${PROJECT_NAME} glfw)
-target_link_libraries(${PROJECT_NAME} glad)
-target_link_libraries(${PROJECT_NAME} glm)
+target_link_libraries(${PROJECT_NAME}
+  glfw
+  glad
+  glm
+  stb
+)

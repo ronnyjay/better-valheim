@@ -2,9 +2,6 @@
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image/stb_image.h>
-
 #include <engine/shader.hpp>
 #include <engine/shader_program.hpp>
 #include <engine/texture.hpp>
