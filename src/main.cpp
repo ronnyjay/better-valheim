@@ -193,15 +193,15 @@ int main(int argc, char const *argv[])
     stbi_set_flip_vertically_on_load(1);
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.10f, 0.10f, 0.10f, 1.0f);
 
     {
         engine::shader_program shader_program;
         engine::vao triangle_vao;
         engine::vbo triangle_vbo;
-        engine::texture triangle_texture("resources/textures/grass.jpg");
+        engine::texture triangle_texture("resources/textures/beans.png");
 
         {
             engine::shader vertex_shader("resources/shaders/triangle.vs", GL_VERTEX_SHADER);
@@ -214,16 +214,16 @@ int main(int argc, char const *argv[])
 
         // clang-format off
         static const GLfloat g_vertex_buffer_data[] = {
-            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-            1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-            1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-            1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            -1.0f, -1.0f, 10.0f, 0.0f, 0.0f,
+            1.0f, -1.0f, 10.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 10.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 10.0f, 0.0f, 0.0f,
+            1.0f, 1.0f, 10.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, 10.0f, 0.0f, 1.0f,
         };
         // clang-format on
 
-        glm::mat4 Projection = glm::ortho(-2.0f, 2.0f, -2.0f, 2.0f, 0.0f, 100.0f); // In world coordinates
+        glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 1000.0f);
         glm::mat4 Model = glm::mat4(1.0f);
 
         triangle_vbo.bind();
@@ -246,14 +246,14 @@ int main(int argc, char const *argv[])
             world_object.update(dt);
             world_object.draw();
 
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             shader_program.use();
 
-            glm::vec3 eye(sin(glfwGetTime()), cos(glfwGetTime()), 1);
-            glm::vec3 center(eye.x, eye.y, 0);
-            glm::vec3 up(0, 1, 0);
+            glm::vec3 player_pos(0, 0, sin(current_time));
+            glm::vec3 player_dir(0, 0, 1);
+            glm::vec3 player_up(0, 1, 0);
 
-            glm::mat4 view = glm::lookAt(eye, center, up);
+            glm::mat4 view = glm::lookAt(player_pos, player_pos + player_dir, player_up);
             glm::mat4 mvp = Projection * view * Model;
 
             glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &mvp[0][0]);

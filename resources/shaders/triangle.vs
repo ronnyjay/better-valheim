@@ -8,7 +8,6 @@ uniform mat4 MVP;
 out vec2 UV;
   
 void main(){
-  gl_Position =  MVP * vec4(vertices,1);
-
   UV = vertexUV;
+  gl_Position =  MVP * vec4(vertices,1);
 }
