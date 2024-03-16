@@ -13,9 +13,14 @@ public:
   shader_program() { m_id = glCreateProgram(); }
 
   void add_shader(GLuint shader_id) { glAttachShader(m_id, shader_id); }
-  void use()
+  void bind()
   {
     glUseProgram(m_id);
+  }
+
+  void unbind()
+  {
+    glUseProgram(0);
   }
 
   void link()

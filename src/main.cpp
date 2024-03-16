@@ -13,8 +13,8 @@
 
 #include <iostream>
 
-int width = 1920;
-int height = 1080;
+int window_width = 1920;
+int window_height = 1080;
 
 void APIENTRY glDebugOutput(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length,
                             const char *message, const void *userParam)
@@ -139,8 +139,8 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 
 void window_size_callback(GLFWwindow *window, int w, int h)
 {
-    width = w;
-    height = h;
+    window_width = w;
+    window_height = h;
     glViewport(0, 0, w, h);
 
     printf("%d, %d\n", w, h);
@@ -161,7 +161,7 @@ int main(int argc, char const *argv[])
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(width, height, "better-valheim", NULL, NULL);
+    window = glfwCreateWindow(window_width, window_height, "better-valheim", NULL, NULL);
     if (!window)
     {
         std::cerr << "Failed to create GLFW window." << std::endl;
@@ -194,42 +194,9 @@ int main(int argc, char const *argv[])
     stbi_set_flip_vertically_on_load(1);
 
     glEnable(GL_DEPTH_TEST);
-    // glEnable(GL_BLEND);
-    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(0.10f, 0.10f, 0.10f, 1.0f);
 
     {
-        engine::shader_program shader_program;
-        engine::vao triangle_vao;
-        engine::vbo triangle_vbo;
-        // engine::texture triangle_texture("resources/textures/beans.png");
-
-        {
-            engine::shader vertex_shader("resources/shaders/debug.vs", GL_VERTEX_SHADER);
-            engine::shader fragment_shader("resources/shaders/debug.fs", GL_FRAGMENT_SHADER);
-
-            shader_program.add_shader(vertex_shader.get_id());
-            shader_program.add_shader(fragment_shader.get_id());
-            shader_program.link();
-        }
-
-        // clang-format off
-        static const GLfloat g_vertex_buffer_data[][6] = {
-            { -1.0f, -1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
-            { +1.0f, -1.0f, 10.0f, 0.7f, 0.2f, 1.0f, },
-            { +1.0f, +1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
-            { -1.0f, -1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
-            { +1.0f, +1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
-            { -1.0f, +1.0f, 10.0f, 0.7f, 0.2f, 1.0f, },
-        };
-        // clang-format on
-
-        triangle_vbo.bind();
-        triangle_vbo.init(g_vertex_buffer_data, sizeof(g_vertex_buffer_data), GL_STATIC_DRAW);
-
-        GLuint matrix_id = glGetUniformLocation(shader_program.get_id(), "MVP");
-        GLuint texture_id = glGetUniformLocation(shader_program.get_id(), "tex");
-
         game::world world_object;
         game::triangle_object triangle_object;
 
@@ -241,40 +208,10 @@ int main(int argc, char const *argv[])
             current_time = glfwGetTime();
             dt = current_time - last_time;
 
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
             world_object.update(dt);
             world_object.draw();
-
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            shader_program.use();
-
-            glm::vec3 player_pos(0, 0, sin(current_time));
-            glm::vec3 player_dir(0, 0, 1);
-            glm::vec3 player_up(0, 1, 0);
-
-            glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 1000.0f);
-            glm::mat4 Model = glm::mat4(1.0f);
-
-            glm::mat4 view = glm::lookAt(player_pos, player_pos + player_dir, player_up);
-            glm::mat4 mvp = Projection * view * Model;
-
-            glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &mvp[0][0]);
-
-            glActiveTexture(GL_TEXTURE0);
-            glUniform1i(texture_id, 0);
-
-            glEnableVertexAttribArray(0);
-            glEnableVertexAttribArray(1);
-
-            triangle_vbo.bind();
-            triangle_vao.bind();
-            triangle_vao.set(0, 3, GL_FLOAT, 6 * sizeof(float), (void *)(0 * sizeof(float)));
-            triangle_vao.set(1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
-            triangle_vao.draw(0, 6);
-
-            glDisableVertexAttribArray(0);
-            glDisableVertexAttribArray(1);
-
-            triangle_vao.unbind();
 
             // Swap buffers and poll for IO events
             glfwSwapBuffers(window);
