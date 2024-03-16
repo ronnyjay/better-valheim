@@ -1,5 +1,4 @@
-#ifndef SHADER_HPP_
-#define SHADER_HPP_
+#pragma once
 
 #include <glad/gl.h>
 #include <glm/glm.hpp>
@@ -51,5 +50,3 @@ class shader
 };
 
 }; // namespace engine
-
-#endif

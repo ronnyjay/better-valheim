@@ -1,5 +1,4 @@
-#ifndef SHADER_PROGRAM_HPP_
-#define SHADER_PROGRAM_HPP_
+#pragma once
 
 #include <glad/gl.h>
 #include <stdexcept>
@@ -52,5 +51,3 @@ private:
 };
 
 }; // namespace engine
-
-#endif

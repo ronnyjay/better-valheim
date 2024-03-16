@@ -1,5 +1,4 @@
-#ifndef VAO_HPP_
-#define VAO_HPP_
+#pragma once
 
 #include <glad/gl.h>
 
@@ -41,5 +40,3 @@ private:
 };
 
 }; // namespace engine
-
-#endif

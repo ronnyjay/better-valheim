@@ -1,5 +1,4 @@
-#ifndef TEXTURE_HPP_
-#define TEXTURE_HPP_
+#pragma once
 
 #include <glad/gl.h>
 
@@ -58,5 +57,3 @@ class texture
 };
 
 }; // namespace engine
-
-#endif

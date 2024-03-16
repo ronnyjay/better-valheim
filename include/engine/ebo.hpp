@@ -1,5 +1,4 @@
-#ifndef EBO_HPP_
-#define EBO_HPP_
+#pragma once
 
 #include <glad/gl.h>
 
@@ -27,5 +26,3 @@ private:
 };
 
 }; // namespace engine
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef VBO_HPP_
-#define VBO_HPP_
+#pragma once
 
 #include <glad/gl.h>
 
@@ -29,5 +28,3 @@ class vbo
 };
 
 }; // namespace engine
-
-#endif
