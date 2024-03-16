@@ -27,7 +27,7 @@ target_include_directories(stb PUBLIC include/)
 # Add executable and set compile options
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC include)
-target_compile_options(${PROJECT_NAME} PRIVATE -Werror -Wall -Wpedantic)
+target_compile_options(${PROJECT_NAME} PRIVATE -Werror -Wall -Wpedantic -Wno-unused-but-set-variable -Wno-unused-variable)
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME}
