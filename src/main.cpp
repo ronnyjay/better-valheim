@@ -1,3 +1,4 @@
+#include "game/circular_object.hpp"
 #include "game/ellipses_object.hpp"
 #include "game/rectangle_object.hpp"
 #define GLFW_INCLUDE_NONE
@@ -203,8 +204,9 @@ int main(int argc, char const *argv[])
         game::triangle_object triangle_object;
         game::rectangle_object rectangle_object;
         game::ellipses_object ellipses_object;
+        game::circular_object circular_object;
 
-        world_object.add_object(&rectangle_object);
+        world_object.add_object(&circular_object);
         last_time = current_time = glfwGetTime();
 
         while (!glfwWindowShouldClose(window))
