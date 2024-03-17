@@ -1,3 +1,4 @@
+#include "game/ellipses_object.hpp"
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
@@ -199,8 +200,9 @@ int main(int argc, char const *argv[])
     {
         game::world world_object;
         game::triangle_object triangle_object;
+        game::ellipses_object ellipses_object;
 
-        world_object.add_object(&triangle_object);
+        world_object.add_object(&ellipses_object);
         last_time = current_time = glfwGetTime();
 
         while (!glfwWindowShouldClose(window))
