@@ -7,7 +7,7 @@ using namespace game;
 ellipses_object::ellipses_object()
 {
     const float a = 1.0f;
-    const float b = 0.5f;
+    const float b = 0.25f;
 
     m_data.push_back(0);
     m_data.push_back(0);

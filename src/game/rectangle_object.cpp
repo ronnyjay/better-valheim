@@ -1,17 +1,19 @@
-#include "engine/shader.hpp"
-#include <game/triangle_object.hpp>
+#include <game/rectangle_object.hpp>
+
+#include <engine/shader.hpp>
 
 using namespace game;
 
 // clang-format off
-const GLfloat triangle_object::m_data[][6] = {
+const GLfloat rectangle_object::m_data[4][6] = {
     { -1.0f, -1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
     { +1.0f, -1.0f, 10.0f, 0.7f, 0.2f, 1.0f, },
+    { -1.0f, 1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
     { +1.0f, +1.0f, 10.0f, 0.0f, 0.0f, 0.0f, },
 };
 // clang-format on
 
-triangle_object::triangle_object()
+rectangle_object::rectangle_object()
 {
     engine::shader vertex_shader("resources/shaders/debug.vs", GL_VERTEX_SHADER);
     engine::shader fragment_shader("resources/shaders/debug.fs", GL_FRAGMENT_SHADER);
@@ -29,9 +31,9 @@ triangle_object::triangle_object()
     m_vbo.unbind();
 }
 
-void triangle_object::update(double dt) {}
+void rectangle_object::update(double dt) {}
 
-void triangle_object::draw(const glm::mat4 &mvp)
+void rectangle_object::draw(const glm::mat4 &mvp)
 {
     m_shader_program.bind();
     m_vbo.bind();
@@ -40,7 +42,7 @@ void triangle_object::draw(const glm::mat4 &mvp)
     m_matrix_id = glGetUniformLocation(m_shader_program.get_id(), "MVP");
     glUniformMatrix4fv(m_matrix_id, 1, GL_FALSE, &mvp[0][0]);
 
-    m_vao.draw(0, 6);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
     m_vao.unbind();
     m_vbo.unbind();
