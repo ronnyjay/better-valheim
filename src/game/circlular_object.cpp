@@ -4,19 +4,16 @@ using namespace game;
 
 circular_object::circular_object()
 {
-    const int m_vertices = 36;
+    const int vertices = 36;
 
     float radius = 2.0f;
 
-    for (int i = 0; i <= m_vertices; i++)
+    for (int i = 0; i <= vertices; i++)
     {
-        float theta = 2.0f * M_PI * i / m_vertices;
+        float theta = 2.0f * M_PI * i / vertices;
 
-        float a = (radius * cosf(theta));
-        float b = (radius * sinf(theta));
-
-        m_data.push_back(a);
-        m_data.push_back(b);
+        m_data.push_back(radius * cosf(theta));
+        m_data.push_back(radius * sinf(theta));
         m_data.push_back(10.0f);
 
         m_data.push_back(0.7f);

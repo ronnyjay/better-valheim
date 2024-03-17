@@ -6,28 +6,22 @@ using namespace game;
 
 ellipses_object::ellipses_object()
 {
-    const float a = 1.0f;
-    const float b = 0.25f;
+    const float vertices = 36;
 
-    m_data.push_back(0);
-    m_data.push_back(0);
-    m_data.push_back(10.0f);
+    const float major = 1.0f;
+    const float minor = 0.25f;
 
-    m_data.push_back(0);
-    m_data.push_back(0);
-    m_data.push_back(1);
-
-    for (int i = 0; i <= m_vertices; i++)
+    for (int i = 0; i <= vertices; i++)
     {
-        float theta = 2.0f * 3.1415 * i / m_vertices;
+        float theta = 2.0f * M_PI * i / vertices;
 
-        m_data.push_back(a * cosf(theta)); // x
-        m_data.push_back(b * sinf(theta)); // y
+        m_data.push_back(major * cosf(theta));
+        m_data.push_back(minor * sinf(theta));
         m_data.push_back(10.0f);
 
-        m_data.push_back(0);
-        m_data.push_back(0);
-        m_data.push_back(1);
+        m_data.push_back(0.7f);
+        m_data.push_back(0.2f);
+        m_data.push_back(1.0f);
     }
 
     engine::shader vertex_shader("resources/shaders/debug.vs", GL_VERTEX_SHADER);
@@ -50,7 +44,6 @@ void ellipses_object::update(double dt) {}
 
 void ellipses_object::draw(const glm::mat4 &mvp)
 {
-
     m_shader_program.bind();
     m_vbo.bind();
     m_vao.bind();
